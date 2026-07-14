@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a problem with GridNews
+description: Report a problem with the GridNews API/service
 labels: ["bug"]
 body:
   - type: textarea
@@ -11,40 +11,77 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: steps
+  - type: dropdown
+    id: component
     attributes:
-      label: Steps to Reproduce
-      description: How can we reproduce this?
-      placeholder: |
-        1. Go to '...'
-        2. Click on '...'
-        3. See error
+      label: Affected Component
+      description: Which part of the system is this about?
+      options:
+        - API endpoint
+        - Ingestion worker
+        - NLP pipeline
+        - Scraper / feed source
+        - Database
+        - Other / not sure
     validations:
       required: true
+
+  - type: textarea
+    id: request
+    attributes:
+      label: Request Details
+      description: Endpoint, HTTP method, and a minimal curl command or payload that reproduces the issue.
+      placeholder: |
+        GET /api/v1/articles?limit=10
+
+        curl -i https://api.gridnews.example/v1/articles?limit=10
+      render: shell
+    validations:
+      required: false
 
   - type: textarea
     id: expected
     attributes:
       label: Expected Behavior
-      description: What did you expect to happen?
+      description: What should have happened (expected response/status/output)?
     validations:
-      required: false
+      required: true
 
   - type: textarea
     id: actual
     attributes:
       label: Actual Behavior
-      description: What actually happened?
+      description: What actually happened? Include status code, error message, or unexpected response body.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Stack Trace
+      description: Relevant logs, stack trace, or pm2/worker output, if available.
+      render: shell
     validations:
       required: false
 
-  - type: input
+  - type: dropdown
     id: environment
     attributes:
       label: Environment
-      description: Browser, OS, device, or other relevant environment details
-      placeholder: e.g. Chrome 126 on macOS 14
+      options:
+        - Production
+        - Staging
+        - Local development
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: frequency
+    attributes:
+      label: Frequency / Impact
+      description: One-off, intermittent, or consistently reproducible? Any known scale (e.g. affects all ingestion, one wire source, single request)?
+      placeholder: e.g. Consistently reproducible, affects all GuruFocus RSS ingestion
     validations:
       required: false
 
@@ -52,6 +89,6 @@ body:
     id: additional
     attributes:
       label: Additional Context
-      description: Screenshots, logs, or any other relevant information
+      description: Anything else relevant — related issues, recent deploys, timing, etc.
     validations:
       required: false
